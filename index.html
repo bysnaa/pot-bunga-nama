@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bahasa Bunga</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fffaf8;
+      text-align: center;
+      padding: 40px;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 250px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      background-color: #eeb4c0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .buket {
+      margin-top: 60px;
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .background-buket {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      object-fit: cover;
+      z-index: 0;
+      border-radius: 12px;
+    }
+    .bunga {
+      position: absolute;
+      width: 90px;
+      opacity: 0;
+      transform-origin: bottom center;
+      transition: opacity 0.5s ease-in-out;
+      left: 120px;
+      top: 120px;
+      z-index: 2;
+    }
+    .pot {
+      position: absolute;
+      bottom: -10px;
+      left: 110px;
+      width: 80px;
+      z-index: 3;
+    }
+    .watermark {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bahasa Bunga</h1>
+  <input type="text" id="nameInput" placeholder="Tulis namamu...">
+  <button onclick="generateBuket()">Buat Bunga</button>
+  <button onclick="simpanGambar()">Simpan</button>
+
+  <div class="buket" id="buket">
+    <img src="background-cream.png" class="background-buket" alt="Background">
+    <img src="pot.png" class="pot" alt="Pot">
+  </div>
+
+  <div class="watermark">by snaa</div>
+
+  <script>
+    const flowerMap = {
+      A: "gambar a.png",
+      B: "gambar b.png",
+      C: "gambar c.png",
+      D: "gambar d.png",
+      E: "gambar e.png",
+      F: "gambar f.png",
+      G: "gambar g.png",
+      H: "gambar h.png",
+      I: "gambar i.png",
+      J: "gambar j.png",
+      K: "GAMBAR K.png",
+      L: "GAMBAR L.png",
+      M: "GAMBAR M.png",
+      N: "GAMBAR N.png",
+      O: "GAMBAR O.png",
+      P: "GAMBAR P.png",
+      Q: "GAMBAR Q.png",
+      R: "GAMBAR R.png",
+      S: "GAMBAR S.png",
+      T: "GAMBAR T.png",
+      U: "GAMBAR U.png",
+      V: "GAMBAR V.png",
+      W: "GAMBAR W.png",
+      X: "GAMBAR X.png",
+      Y: "GAMBAR Y.png",
+      Z: "GAMBAR Z.png"
+    };
+
+    function getRotation(index) {
+      const angles = [0, 8, -8, 10, -10, 15, -15, 25, -25, 6, -6];
+      return angles[index] || (index % 2 === 0 ? 6 : -6);
+    }
+
+    function generateBuket() {
+      const name = document.getElementById("nameInput").value.toUpperCase();
+      const buket = document.getElementById("buket");
+      const existingFlowers = buket.querySelectorAll(".bunga");
+      existingFlowers.forEach(f => f.remove());
+
+      let delay = 0;
+      for (let i = 0; i < name.length; i++) {
+        const letter = name[i];
+        const imgUrl = flowerMap[letter];
+
+        if (imgUrl) {
+          const img = document.createElement("img");
+          img.src = imgUrl;
+          img.className = "bunga";
+          const rotation = getRotation(i);
+          img.style.transform = `rotate(${rotation}deg)`;
+
+          setTimeout(() => {
+            img.style.opacity = 1;
+          }, delay);
+          delay += 300;
+
+          buket.appendChild(img);
+        }
+      }
+    }
+
+    function simpanGambar() {
+      html2canvas(document.getElementById("buket")).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "buket-bunga.png";
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>
